@@ -1,0 +1,34 @@
+<Page x:Class="TourManagementSystem.Views.PlaceholderPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Placeholder Page"
+      Background="White">
+    
+    <Grid>
+        <StackPanel VerticalAlignment="Center" 
+                    HorizontalAlignment="Center">
+            
+            <TextBlock x:Name="TitleText" 
+                     FontSize="32" 
+                     FontWeight="Bold" 
+                     Foreground="#2196F3" 
+                     Margin="0,0,0,20"/>
+            
+            <TextBlock x:Name="DescriptionText" 
+                     FontSize="18" 
+                     Foreground="#666" 
+                     Margin="0,0,0,30"/>
+            
+            <Border Background="#F5F5F5" 
+                    Padding="20" 
+                    CornerRadius="10" 
+                    MaxWidth="400">
+                <TextBlock Text="🚧 This feature is under development and will be available soon! 🚧" 
+                         FontSize="14" 
+                         Foreground="#999" 
+                         TextWrapping="Wrap"
+                         TextAlignment="Center"/>
+            </Border>
+        </StackPanel>
+    </Grid>
+</Page> 

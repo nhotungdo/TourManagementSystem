@@ -1,0 +1,186 @@
+<Window x:Class="TourManagementSystem.Views.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:converters="clr-namespace:TourManagementSystem.Converters"
+        Title="Tour Management System - Login" 
+        Height="500" Width="400"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Background="#F5F5F5">
+    
+    <Window.Resources>
+        <!-- Converters -->
+        <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        
+        <Style x:Key="ModernButton" TargetType="Button">
+            <Setter Property="Background" Value="#2196F3"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="20,10"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="5"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#1976D2"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#0D47A1"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" Value="#BDBDBD"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ModernTextBox" TargetType="TextBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="5">
+                            <ScrollViewer x:Name="PART_ContentHost" 
+                                        Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="BorderBrush" Value="#2196F3"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ModernPasswordBox" TargetType="PasswordBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="PasswordBox">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="5">
+                            <ScrollViewer x:Name="PART_ContentHost" 
+                                        Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="BorderBrush" Value="#2196F3"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="#2196F3" Padding="20">
+            <StackPanel>
+                <TextBlock Text="🌍 Tour Management System" 
+                         FontSize="24" 
+                         FontWeight="Bold" 
+                         Foreground="White" 
+                         HorizontalAlignment="Center"/>
+                <TextBlock Text="Sign in to your account" 
+                         FontSize="14" 
+                         Foreground="#E3F2FD" 
+                         HorizontalAlignment="Center" 
+                         Margin="0,5,0,0"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Login Form -->
+        <StackPanel Grid.Row="1" 
+                    VerticalAlignment="Center" 
+                    HorizontalAlignment="Center" 
+                    Width="300" 
+                    Margin="20">
+            
+            <!-- Username -->
+            <TextBlock Text="Username" 
+                     FontSize="14" 
+                     FontWeight="SemiBold" 
+                     Margin="0,0,0,5"/>
+            <TextBox x:Name="UsernameTextBox" 
+                   Style="{StaticResource ModernTextBox}"
+                   Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
+                   Margin="0,0,0,15"/>
+
+            <!-- Password -->
+            <TextBlock Text="Password" 
+                     FontSize="14" 
+                     FontWeight="SemiBold" 
+                     Margin="0,0,0,5"/>
+            <PasswordBox x:Name="PasswordBox" 
+                       Style="{StaticResource ModernPasswordBox}"
+                       Margin="0,0,0,20"/>
+
+            <!-- Login Button -->
+            <Button Content="Sign In" 
+                  Style="{StaticResource ModernButton}"
+                  Command="{Binding LoginCommand}"
+                  IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBooleanConverter}}"
+                  Margin="0,0,0,15"/>
+
+            <!-- Loading Indicator -->
+            <ProgressBar IsIndeterminate="True" 
+                       Height="2" 
+                       Margin="0,0,0,15"
+                       Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+            <!-- Forgot Password Link -->
+            <StackPanel Orientation="Horizontal" 
+                      HorizontalAlignment="Center">
+                <TextBlock Text="Forgot your password? " 
+                         FontSize="12" 
+                         Foreground="#666"/>
+                <TextBlock Text="Reset here" 
+                         FontSize="12" 
+                         Foreground="#FF9800" 
+                         Cursor="Hand"
+                         TextDecorations="Underline"
+                         MouseLeftButtonDown="ForgotPasswordText_MouseLeftButtonDown"/>
+            </StackPanel>
+
+            <!-- Error Message -->
+            <TextBlock x:Name="ErrorMessage" 
+                     Foreground="#F44336" 
+                     FontSize="12" 
+                     TextAlignment="Center" 
+                     Margin="0,10,0,0"
+                     Visibility="Collapsed"/>
+        </StackPanel>
+    </Grid>
+</Window> 

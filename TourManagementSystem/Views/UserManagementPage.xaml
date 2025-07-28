@@ -1,0 +1,223 @@
+<Page x:Class="TourManagementSystem.Views.UserManagementPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="User Management" 
+      Background="White">
+    
+    <Page.Resources>
+        <Style x:Key="ActionButton" TargetType="Button">
+            <Setter Property="Background" Value="#2196F3"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="15,8"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="5"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#1976D2"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="DeleteButton" TargetType="Button" BasedOn="{StaticResource ActionButton}">
+            <Setter Property="Background" Value="#F44336"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#D32F2F"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="EditButton" TargetType="Button" BasedOn="{StaticResource ActionButton}">
+            <Setter Property="Background" Value="#FF9800"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#F57C00"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Page.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,20">
+            <TextBlock Text="👥 User Management" 
+                     FontSize="24" 
+                     FontWeight="Bold" 
+                     Margin="0,0,0,10"/>
+            <TextBlock Text="Manage staff, customers, and guides" 
+                     FontSize="14" 
+                     Foreground="#666"/>
+        </StackPanel>
+
+        <!-- Controls -->
+        <Grid Grid.Row="1" Margin="0,0,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Search Box -->
+            <TextBox x:Name="SearchTextBox" 
+                   Grid.Column="0"
+                   Margin="0,0,10,0"
+                   Padding="10,8"
+                   FontSize="14"
+                   BorderThickness="1"
+                   BorderBrush="#DDD"
+                   TextChanged="SearchTextBox_TextChanged"
+                   VerticalContentAlignment="Center">
+                <TextBox.Style>
+                    <Style TargetType="TextBox">
+                        <Style.Triggers>
+                            <Trigger Property="Text" Value="">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <VisualBrush AlignmentX="Left" AlignmentY="Center" Stretch="None">
+                                            <VisualBrush.Visual>
+                                                <TextBlock Text="🔍 Search users..." 
+                                                         Foreground="Gray" 
+                                                         FontSize="14"/>
+                                            </VisualBrush.Visual>
+                                        </VisualBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
+
+            <!-- Role Filter -->
+            <ComboBox x:Name="RoleFilterComboBox" 
+                    Grid.Column="1"
+                    Margin="0,0,10,0"
+                    Padding="10,8"
+                    FontSize="14"
+                    Width="150"
+                    SelectionChanged="RoleFilterComboBox_SelectionChanged">
+                <ComboBoxItem Content="All Roles" IsSelected="True"/>
+                <ComboBoxItem Content="Admin"/>
+                <ComboBoxItem Content="Staff"/>
+                <ComboBoxItem Content="Customer"/>
+
+            </ComboBox>
+
+            <!-- Add User Button -->
+            <Button Content="➕ Add New User" 
+                  Grid.Column="2"
+                  Style="{StaticResource ActionButton}"
+                  Click="AddUserButton_Click"/>
+        </Grid>
+
+        <!-- DataGrid -->
+        <DataGrid x:Name="UsersDataGrid" 
+                Grid.Row="2"
+                AutoGenerateColumns="False"
+                CanUserAddRows="False"
+                CanUserDeleteRows="False"
+                CanUserReorderColumns="True"
+                CanUserResizeColumns="True"
+                CanUserResizeRows="False"
+                GridLinesVisibility="Horizontal"
+                HeadersVisibility="Column"
+                SelectionMode="Single"
+                SelectionChanged="UsersDataGrid_SelectionChanged">
+            
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" 
+                                  Binding="{Binding UserId}" 
+                                  Width="60" 
+                                  IsReadOnly="True"/>
+                
+                <DataGridTextColumn Header="Username" 
+                                  Binding="{Binding Username}" 
+                                  Width="120"/>
+                
+                <DataGridTextColumn Header="Full Name" 
+                                  Binding="{Binding FullName}" 
+                                  Width="150"/>
+                
+                <DataGridTextColumn Header="Email" 
+                                  Binding="{Binding Email}" 
+                                  Width="200"/>
+                
+                <DataGridTextColumn Header="Phone" 
+                                  Binding="{Binding Phone}" 
+                                  Width="120"/>
+                
+                <DataGridTextColumn Header="Role" 
+                                  Binding="{Binding Role}" 
+                                  Width="100"/>
+                
+                <DataGridTextColumn Header="Status" 
+                                  Binding="{Binding IsActive}" 
+                                  Width="80">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Text" Value="{Binding IsActive}"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsActive}" Value="True">
+                                    <Setter Property="Text" Value="Active"/>
+                                    <Setter Property="Foreground" Value="Green"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsActive}" Value="False">
+                                    <Setter Property="Text" Value="Inactive"/>
+                                    <Setter Property="Foreground" Value="Red"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                
+                <DataGridTextColumn Header="Created" 
+                                  Binding="{Binding CreatedAt, StringFormat=dd/MM/yyyy}" 
+                                  Width="100" 
+                                  IsReadOnly="True"/>
+                
+                <DataGridTemplateColumn Header="Actions" Width="200">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Content="✏️" 
+                                      Style="{StaticResource EditButton}"
+                                      Click="EditUser_Click"
+                                      Tag="{Binding UserId}"
+                                      ToolTip="Edit User"/>
+                                <Button Content="🔄" 
+                                      Style="{StaticResource EditButton}"
+                                      Click="ToggleUserStatus_Click"
+                                      Tag="{Binding UserId}"
+                                      ToolTip="Toggle User Status"/>
+                                <Button Content="🗑️" 
+                                      Style="{StaticResource DeleteButton}"
+                                      Click="DeleteUser_Click"
+                                      Tag="{Binding UserId}"
+                                      ToolTip="Delete User"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Page> 

@@ -1,0 +1,150 @@
+<Window x:Class="TourManagementSystem.Views.EditReviewWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Edit Review" 
+        Height="500" 
+        Width="450"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Background="White">
+    
+    <Window.Resources>
+        <!-- Form TextBox Style -->
+        <Style x:Key="FormTextBox" TargetType="TextBox">
+            <Setter Property="Margin" Value="0,5,0,15"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="BorderBrush" Value="#DDD"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="White"/>
+        </Style>
+
+        <!-- Form ComboBox Style -->
+        <Style x:Key="FormComboBox" TargetType="ComboBox">
+            <Setter Property="Margin" Value="0,5,0,15"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="BorderBrush" Value="#DDD"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="White"/>
+        </Style>
+
+        <!-- Action Button Style -->
+        <Style x:Key="ActionButton" TargetType="Button">
+            <Setter Property="Background" Value="#2196F3"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="20,10"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#1976D2"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Cancel Button Style -->
+        <Style x:Key="CancelButton" TargetType="Button">
+            <Setter Property="Background" Value="#F44336"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="20,10"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#D32F2F"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,20">
+            <TextBlock Text="⭐ Edit Review" 
+                     FontSize="24" 
+                     FontWeight="Bold" 
+                     Margin="0,0,0,5"/>
+            <TextBlock Text="Update review information" 
+                     FontSize="14" 
+                     Foreground="#666"/>
+        </StackPanel>
+
+        <!-- Form -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <!-- Customer (Read-only) -->
+                <TextBlock Text="Customer" 
+                         FontSize="14" 
+                         FontWeight="SemiBold"/>
+                <TextBox x:Name="CustomerTextBox" 
+                       Style="{StaticResource FormTextBox}"
+                       IsReadOnly="True"/>
+
+                <!-- Tour (Read-only) -->
+                <TextBlock Text="Tour" 
+                         FontSize="14" 
+                         FontWeight="SemiBold"/>
+                <TextBox x:Name="TourTextBox" 
+                       Style="{StaticResource FormTextBox}"
+                       IsReadOnly="True"/>
+
+                <!-- Rating -->
+                <TextBlock Text="Rating *" 
+                         FontSize="14" 
+                         FontWeight="SemiBold"/>
+                <ComboBox x:Name="RatingComboBox" 
+                        Style="{StaticResource FormComboBox}">
+                    <ComboBoxItem Content="1 ⭐" Tag="1"/>
+                    <ComboBoxItem Content="2 ⭐⭐" Tag="2"/>
+                    <ComboBoxItem Content="3 ⭐⭐⭐" Tag="3"/>
+                    <ComboBoxItem Content="4 ⭐⭐⭐⭐" Tag="4"/>
+                    <ComboBoxItem Content="5 ⭐⭐⭐⭐⭐" Tag="5"/>
+                </ComboBox>
+
+                <!-- Comment -->
+                <TextBlock Text="Comment *" 
+                         FontSize="14" 
+                         FontWeight="SemiBold"/>
+                <TextBox x:Name="CommentTextBox" 
+                       Style="{StaticResource FormTextBox}"
+                       MaxLength="1000"
+                       TextWrapping="Wrap"
+                       AcceptsReturn="True"
+                       Height="120"/>
+
+                <!-- Review Date (Read-only) -->
+                <TextBlock Text="Review Date" 
+                         FontSize="14" 
+                         FontWeight="SemiBold"/>
+                <TextBox x:Name="ReviewDateTextBox" 
+                       Style="{StaticResource FormTextBox}"
+                       IsReadOnly="True"/>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Buttons -->
+        <StackPanel Grid.Row="2" 
+                  Orientation="Horizontal" 
+                  HorizontalAlignment="Right" 
+                  Margin="0,20,0,0">
+            <Button Content="Cancel" 
+                  Style="{StaticResource CancelButton}"
+                  Click="CancelButton_Click"
+                  Margin="0,0,10,0"/>
+            <Button Content="Update Review" 
+                  Style="{StaticResource ActionButton}"
+                  Click="UpdateReviewButton_Click"/>
+        </StackPanel>
+    </Grid>
+</Window> 

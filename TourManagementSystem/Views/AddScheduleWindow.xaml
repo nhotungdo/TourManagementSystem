@@ -1,0 +1,154 @@
+<Window x:Class="TourManagementSystem.Views.AddScheduleWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Create Schedule" 
+        Height="652" Width="524"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Background="#F5F5F5">
+
+    <Window.Resources>
+        <Style x:Key="FormTextBox" TargetType="TextBox">
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#DDD"/>
+            <Setter Property="Margin" Value="0,5,0,15"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="FormComboBox" TargetType="ComboBox">
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#DDD"/>
+            <Setter Property="Margin" Value="0,5,0,15"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="ActionButton" TargetType="Button">
+            <Setter Property="Background" Value="#2196F3"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="20,10"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="5"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#1976D2"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="CancelButton" TargetType="Button" BasedOn="{StaticResource ActionButton}">
+            <Setter Property="Background" Value="#757575"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#616161"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,20">
+            <TextBlock Text="📅 Create Schedule" 
+                     FontSize="24" 
+                     FontWeight="Bold" 
+                     Margin="0,0,0,5"/>
+            <TextBlock Text="Create a new tour schedule" 
+                     FontSize="14" 
+                     Foreground="#666"/>
+        </StackPanel>
+
+        <!-- Form -->
+        <StackPanel Grid.Row="1">
+            <!-- Tour Selection -->
+            <TextBlock Text="Tour *" 
+                     FontSize="14" 
+                     FontWeight="SemiBold"/>
+            <ComboBox x:Name="TourComboBox" 
+                    Style="{StaticResource FormComboBox}"
+                    DisplayMemberPath="Name"
+                    SelectionChanged="TourComboBox_SelectionChanged"/>
+
+            <!-- Departure Date -->
+            <TextBlock Text="Departure Date *" 
+                     FontSize="14" 
+                     FontWeight="SemiBold"/>
+            <DatePicker x:Name="DepartureDatePicker" 
+                      Margin="0,5,0,15"
+                      FontSize="14"/>
+
+            <!-- Return Date -->
+            <TextBlock Text="Return Date *" 
+                     FontSize="14" 
+                     FontWeight="SemiBold"/>
+            <DatePicker x:Name="ReturnDatePicker" 
+                      Margin="0,5,0,15"
+                      FontSize="14"/>
+
+            <!-- Max Capacity -->
+            <TextBlock Text="Max Capacity *" 
+                     FontSize="14" 
+                     FontWeight="SemiBold"/>
+            <TextBox x:Name="MaxCapacityTextBox" 
+                   Style="{StaticResource FormTextBox}"
+                   MaxLength="3"/>
+
+            <!-- Guide Selection -->
+            <TextBlock Text="Guide *" 
+                     FontSize="14" 
+                     FontWeight="SemiBold"/>
+            <ComboBox x:Name="GuideComboBox" 
+                    Style="{StaticResource FormComboBox}"
+                    DisplayMemberPath="FullName"/>
+
+            <!-- Status -->
+            <TextBlock Text="Status" 
+                     FontSize="14" 
+                     FontWeight="SemiBold"/>
+            <ComboBox x:Name="StatusComboBox" 
+                    Style="{StaticResource FormComboBox}">
+                <ComboBoxItem Content="Scheduled" IsSelected="True"/>
+                <ComboBoxItem Content="In Progress"/>
+                <ComboBoxItem Content="Completed"/>
+                <ComboBoxItem Content="Cancelled"/>
+            </ComboBox>
+        </StackPanel>
+
+        <!-- Buttons -->
+        <StackPanel Grid.Row="2" 
+                  Orientation="Horizontal" 
+                  HorizontalAlignment="Right" 
+                  Margin="0,20,0,0">
+            <Button Content="Cancel" 
+                  Style="{StaticResource CancelButton}"
+                  Click="CancelButton_Click"
+                  Margin="0,0,10,0"/>
+            <Button Content="Create Schedule" 
+                  Style="{StaticResource ActionButton}"
+                  Click="CreateScheduleButton_Click"/>
+        </StackPanel>
+    </Grid>
+</Window> 

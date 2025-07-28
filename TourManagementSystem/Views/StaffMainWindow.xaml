@@ -1,0 +1,164 @@
+<Window x:Class="TourManagementSystem.Views.StaffMainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Tour Management System - Staff Dashboard" 
+        Height="800" Width="1200"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
+        Background="#F5F5F5">
+    
+    <Window.Resources>
+        <Style x:Key="MenuButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#333"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="20,15"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                            VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#E3F2FD"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#BBDEFB"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ActiveMenuButton" TargetType="Button" BasedOn="{StaticResource MenuButton}">
+            <Setter Property="Background" Value="#2196F3"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Sidebar -->
+        <Border Grid.Column="0" 
+                Background="White" 
+                BorderBrush="#E0E0E0" 
+                BorderThickness="0,0,1,0">
+            
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Header -->
+                <Border Grid.Row="0" 
+                        Background="#2196F3" 
+                        Padding="20">
+                    <StackPanel>
+                        <TextBlock Text="👨‍💼 Staff Panel" 
+                                 FontSize="18" 
+                                 FontWeight="Bold" 
+                                 Foreground="White"/>
+                        <TextBlock x:Name="UserNameText" 
+                                 FontSize="12" 
+                                 Foreground="#E8F5E8" 
+                                 Margin="0,5,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Navigation Menu -->
+                <ScrollViewer Grid.Row="1" 
+                            VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="0,20">
+                        
+                        <!-- Dashboard -->
+                        <Button Content="📊 Dashboard" 
+                              Style="{StaticResource MenuButton}"
+                              Click="DashboardButton_Click"
+                              x:Name="DashboardButton"/>
+
+                        <!-- Tour Management -->
+                        <Button Content="🗺️ Tour Management" 
+                              Style="{StaticResource MenuButton}"
+                              Click="TourManagementButton_Click"
+                              x:Name="TourManagementButton"/>
+
+                        <!-- Itinerary Management -->
+                        <Button Content="🗺️ Itinerary Management" 
+                              Style="{StaticResource MenuButton}"
+                              Click="ItineraryManagementButton_Click"
+                              x:Name="ItineraryManagementButton"/>
+
+                        <!-- Schedule Management -->
+                        <Button Content="📅 Schedule Management" 
+                              Style="{StaticResource MenuButton}"
+                              Click="ScheduleManagementButton_Click"
+                              x:Name="ScheduleManagementButton"/>
+
+                        <!-- Booking Management -->
+                        <Button Content="📋 Booking Management" 
+                              Style="{StaticResource MenuButton}"
+                              Click="BookingManagementButton_Click"
+                              x:Name="BookingManagementButton"/>
+
+                        <!-- Payment Management -->
+                        <Button Content="💳 Payment Management" 
+                              Style="{StaticResource MenuButton}"
+                              Click="PaymentManagementButton_Click"
+                              x:Name="PaymentManagementButton"/>
+
+                        <!-- Invoice Management -->
+                        <Button Content="🧾 Invoice Management" 
+                              Style="{StaticResource MenuButton}"
+                              Click="InvoiceManagementButton_Click"
+                              x:Name="InvoiceManagementButton"/>
+
+                        <!-- Review Management -->
+                        <Button Content="⭐ Review Management" 
+                              Style="{StaticResource MenuButton}"
+                              Click="ReviewManagementButton_Click"
+                              x:Name="ReviewManagementButton"/>
+
+                        <!-- Attraction Management -->
+                        <Button Content="🏞️ Attraction Management" 
+                              Style="{StaticResource MenuButton}"
+                              Click="AttractionManagementButton_Click"
+                              x:Name="AttractionManagementButton"/>
+
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- Logout -->
+                <Border Grid.Row="2" 
+                        Background="#F5F5F5" 
+                        Padding="20">
+                    <Button Content="🚪 Logout" 
+                          Style="{StaticResource MenuButton}"
+                          Click="LogoutButton_Click"
+                          Background="#2196F3"
+                          Foreground="White"/>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- Main Content Area -->
+        <Border Grid.Column="1" 
+                Background="White" 
+                Margin="10">
+            <Frame x:Name="MainFrame" 
+                 NavigationUIVisibility="Hidden"/>
+        </Border>
+    </Grid>
+</Window> 
