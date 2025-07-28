@@ -1,0 +1,202 @@
+<Page x:Class="TourManagementSystem.Views.ItineraryManagementPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:converters="clr-namespace:TourManagementSystem.Converters"
+      Title="Itinerary Management" 
+      Background="White"
+      Unloaded="Page_Unloaded">
+    
+    <Page.Resources>
+        <converters:BooleanToStatusConverter x:Key="BooleanToStatusConverter"/>
+        
+        <Style x:Key="ActionButton" TargetType="Button">
+            <Setter Property="Background" Value="#2196F3"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="15,8"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                Padding="{TemplateBinding Padding}"
+                                CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#1976D2"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#0D47A1"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ActionButtonSmall" TargetType="Button" BasedOn="{StaticResource ActionButton}">
+            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Margin" Value="2"/>
+        </Style>
+
+        <Style x:Key="DangerButton" TargetType="Button" BasedOn="{StaticResource ActionButtonSmall}">
+            <Setter Property="Background" Value="#F44336"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#D32F2F"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="EditButton" TargetType="Button" BasedOn="{StaticResource ActionButtonSmall}">
+            <Setter Property="Background" Value="#FF9800"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#F57C00"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Page.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,20">
+            <TextBlock Text="🗺️ Itinerary Management" 
+                     FontSize="24" 
+                     FontWeight="Bold" 
+                     Foreground="#333"/>
+            <TextBlock Text="Manage tour itineraries and attractions" 
+                     FontSize="14" 
+                     Foreground="#666" 
+                     Margin="0,5,0,0"/>
+        </StackPanel>
+
+        <!-- Search and Filter Bar -->
+        <Grid Grid.Row="1" Margin="0,0,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Search Box -->
+            <TextBox x:Name="SearchTextBox" 
+                   Grid.Column="0"
+                   Margin="0,0,10,0"
+                   Padding="10,8"
+                   FontSize="14"
+                   BorderThickness="1"
+                   BorderBrush="#DDD"
+                   TextChanged="SearchTextBox_TextChanged"
+                   VerticalContentAlignment="Center">
+                <TextBox.Style>
+                    <Style TargetType="TextBox">
+                        <Style.Triggers>
+                            <Trigger Property="Text" Value="">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <VisualBrush AlignmentX="Left" AlignmentY="Center" Stretch="None">
+                                            <VisualBrush.Visual>
+                                                <TextBlock Text="🔍 Search itineraries..." 
+                                                         Foreground="Gray" 
+                                                         FontSize="14"/>
+                                            </VisualBrush.Visual>
+                                        </VisualBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
+
+            <!-- Tour Filter -->
+            <ComboBox x:Name="TourFilterComboBox" 
+                    Grid.Column="1"
+                    Margin="0,0,10,0"
+                    Padding="10,8"
+                    FontSize="14"
+                    Width="200"
+                    SelectionChanged="TourFilterComboBox_SelectionChanged">
+                <ComboBoxItem Content="All Tours" IsSelected="True"/>
+            </ComboBox>
+
+            <!-- Add Itinerary Button -->
+            <Button Content="➕ Add Itinerary" 
+                  Grid.Column="2"
+                  Style="{StaticResource ActionButton}"
+                  Click="AddItineraryButton_Click"/>
+        </Grid>
+
+        <!-- DataGrid -->
+        <DataGrid x:Name="ItinerariesDataGrid" 
+                Grid.Row="2"
+                AutoGenerateColumns="False"
+                CanUserAddRows="False"
+                CanUserDeleteRows="False"
+                CanUserReorderColumns="True"
+                CanUserResizeColumns="True"
+                CanUserResizeRows="False"
+                GridLinesVisibility="Horizontal"
+                HeadersVisibility="Column"
+                SelectionMode="Single"
+                Sorting="ItinerariesDataGrid_Sorting"
+                SelectionChanged="ItinerariesDataGrid_SelectionChanged">
+            
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Tour" 
+                                  Binding="{Binding Tour.TourName}" 
+                                  Width="200"/>
+                
+                <DataGridTextColumn Header="Attraction" 
+                                  Binding="{Binding Attraction.AttractionName}" 
+                                  Width="200"/>
+                
+                <DataGridTextColumn Header="Location" 
+                                  Binding="{Binding Attraction.Location}" 
+                                  Width="150"/>
+                
+                <DataGridTextColumn Header="Visit Day" 
+                                  Binding="{Binding VisitDay}" 
+                                  Width="80"/>
+                
+                <DataGridTextColumn Header="Visit Order" 
+                                  Binding="{Binding VisitOrder}" 
+                                  Width="80"/>
+                
+                <DataGridTextColumn Header="Description" 
+                                  Binding="{Binding Description}" 
+                                  Width="250"/>
+                
+                <DataGridTemplateColumn Header="Actions" Width="150">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Content="✏️ Edit" 
+                                      Style="{StaticResource EditButton}"
+                                      Click="EditItinerary_Click"
+                                      Tag="{Binding}"/>
+                                <Button Content="🗑️ Delete" 
+                                      Style="{StaticResource DangerButton}"
+                                      Click="DeleteItinerary_Click"
+                                      Tag="{Binding}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Page> 

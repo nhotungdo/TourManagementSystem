@@ -1,0 +1,253 @@
+<Window x:Class="TourManagementSystem.Views.CustomerMainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Tour Management System - Customer Portal" 
+        Height="800" Width="1200"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
+        Background="#F5F5F5">
+    
+    <Window.Resources>
+        <Style x:Key="MenuButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#333"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="20,15"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                            VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#E3F2FD"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#BBDEFB"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ActiveMenuButton" TargetType="Button" BasedOn="{StaticResource MenuButton}">
+            <Setter Property="Background" Value="#2196F3"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <!-- Quick Actions Styles -->
+        <Style x:Key="QuickActionButton" TargetType="Button">
+            <Setter Property="Background" Value="#2196F3"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="15,10"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="8"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                            VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#2196F3"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#2196F3"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="280"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Sidebar -->
+        <Border Grid.Column="0" 
+                Background="White" 
+                BorderBrush="#E0E0E0" 
+                BorderThickness="0,0,1,0">
+            
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Header -->
+                <Border Grid.Row="0" 
+                        Background="#2196F3" 
+                        Padding="20">
+                    <StackPanel>
+                        <TextBlock Text="👤 Customer Portal" 
+                                 FontSize="18" 
+                                 FontWeight="Bold" 
+                                 Foreground="White"/>
+                        <TextBlock x:Name="UserNameText" 
+                                 FontSize="12" 
+                                 Foreground="#FFF3E0" 
+                                 Margin="0,5,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Navigation Menu -->
+                <ScrollViewer Grid.Row="1" 
+                            VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="0,20">
+                        
+                        <!-- Dashboard -->
+                        <Button Content="🏠 My Dashboard" 
+                              Style="{StaticResource MenuButton}"
+                              Click="DashboardButton_Click"
+                              x:Name="DashboardButton"/>
+
+                        <!-- Quick Actions Section -->
+                        <Border Background="#F8F9FA" 
+                                Margin="10,15,10,15" 
+                                Padding="15"
+                                CornerRadius="8">
+                            <StackPanel>
+                                <TextBlock Text="⚡ Quick Actions" 
+                                         FontSize="14" 
+                                         FontWeight="Bold" 
+                                         Foreground="#333"
+                                         Margin="0,0,0,10"/>
+                                
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <!-- Browse Tours -->
+                                    <Button Grid.Column="0" Grid.Row="0"
+                                          Content="🗺️ Browse Tours" 
+                                          Style="{StaticResource QuickActionButton}"
+                                          Click="BrowseToursButton_Click"
+                                          Margin="0,0,5,5"/>
+
+                                    <!-- New Booking -->
+                                    <Button Grid.Column="1" Grid.Row="0"
+                                          Content="📋 New Booking" 
+                                          Style="{StaticResource QuickActionButton}"
+                                          Click="BookTourButton_Click"
+                                          Margin="5,0,0,5"/>
+
+                                    <!-- Make Payment -->
+                                    <Button Grid.Column="0" Grid.Row="1"
+                                          Content="💳 Make Payment" 
+                                          Style="{StaticResource QuickActionButton}"
+                                          Click="PaymentManagementButton_Click"
+                                          Margin="0,5,5,0"/>
+
+                                    <!-- Write Review -->
+                                    <Button Grid.Column="1" Grid.Row="1"
+                                          Content="⭐ Write Review" 
+                                          Style="{StaticResource QuickActionButton}"
+                                          Click="MyReviewsButton_Click"
+                                          Margin="5,5,0,0"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Account Management -->
+                        <Button Content="👤 Account Management" 
+                              Style="{StaticResource MenuButton}"
+                              Click="AccountManagementButton_Click"
+                              x:Name="AccountManagementButton"/>
+
+                        <!-- Browse Tours -->
+                        <Button Content="🗺️ Browse Tours" 
+                              Style="{StaticResource MenuButton}"
+                              Click="BrowseToursButton_Click"
+                              x:Name="BrowseToursButton"/>
+
+                        <!-- Book Tour -->
+                        <Button Content="📆 Book Tour" 
+                              Style="{StaticResource MenuButton}"
+                              Click="BookTourButton_Click"
+                              x:Name="BookTourButton"/>
+
+                        <!-- My Bookings -->
+                        <Button Content="📋 My Bookings" 
+                              Style="{StaticResource MenuButton}"
+                              Click="MyBookingsButton_Click"
+                              x:Name="MyBookingsButton"/>
+
+                        <!-- Payment Management -->
+                        <Button Content="💳 Payment Management" 
+                              Style="{StaticResource MenuButton}"
+                              Click="PaymentManagementButton_Click"
+                              x:Name="PaymentManagementButton"/>
+
+                        <!-- Booking History -->
+                        <Button Content="📜 Booking History" 
+                              Style="{StaticResource MenuButton}"
+                              Click="BookingHistoryButton_Click"
+                              x:Name="BookingHistoryButton"/>
+
+                        <!-- My Reviews -->
+                        <Button Content="⭐ My Reviews" 
+                              Style="{StaticResource MenuButton}"
+                              Click="MyReviewsButton_Click"
+                              x:Name="MyReviewsButton"/>
+
+                      
+
+                        <!-- Promotions -->
+                        <Button Content="🎁 Promotions" 
+                              Style="{StaticResource MenuButton}"
+                              Click="PromotionsButton_Click"
+                              x:Name="PromotionsButton"/>
+
+                
+
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- Logout -->
+                <Border Grid.Row="2" 
+                        Background="#F5F5F5" 
+                        Padding="20">
+                    <Button Content="🚪 Logout" 
+                          Style="{StaticResource MenuButton}"
+                          Click="LogoutButton_Click"
+                          Background="#2196F3"
+                          Foreground="White"/>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- Main Content Area -->
+        <Border Grid.Column="1" 
+                Background="White" 
+                Margin="10">
+            <Frame x:Name="MainFrame" 
+                 NavigationUIVisibility="Hidden"/>
+        </Border>
+    </Grid>
+</Window> 

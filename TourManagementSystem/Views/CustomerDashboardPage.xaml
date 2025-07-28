@@ -1,0 +1,250 @@
+<Page x:Class="TourManagementSystem.Views.CustomerDashboardPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Customer Dashboard" 
+      Background="White">
+    
+    <Page.Resources>
+        <Style x:Key="StatCard" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="Gray" Direction="270" ShadowDepth="2" Opacity="0.3"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="QuickActionButton" TargetType="Button">
+            <Setter Property="Background" Value="#2196F3"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="20,15"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="6"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#F57C00"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#E65100"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="NotificationCard" TargetType="Border">
+            <Setter Property="Background" Value="#E3F2FD"/>
+            <Setter Property="BorderBrush" Value="#2196F3"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="Padding" Value="15"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+    </Page.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <StackPanel Grid.Row="0" Margin="0,0,0,20">
+                <TextBlock Text="🏠 My Dashboard" 
+                         FontSize="28" 
+                         FontWeight="Bold" 
+                         Foreground="#333"
+                         Margin="0,0,0,10"/>
+                <TextBlock Text="Welcome to your customer dashboard. Here's an overview of your tours, bookings, and activities." 
+                         FontSize="14" 
+                         Foreground="#666"/>
+            </StackPanel>
+
+            <!-- Quick Statistics -->
+            <Grid Grid.Row="1" Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Total Bookings -->
+                <Border Grid.Column="0" Style="{StaticResource StatCard}">
+                    <StackPanel>
+                        <TextBlock Text="📋 Total Bookings" 
+                                 FontSize="16" 
+                                 FontWeight="SemiBold" 
+                                 Foreground="#666"/>
+                        <TextBlock x:Name="TotalBookingsText" 
+                                 Text="0" 
+                                 FontSize="32" 
+                                 FontWeight="Bold" 
+                                 Foreground="#4CAF50"/>
+                        <TextBlock Text="All time bookings" 
+                                 FontSize="12" 
+                                 Foreground="#999"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Upcoming Tours -->
+                <Border Grid.Column="1" Style="{StaticResource StatCard}">
+                    <StackPanel>
+                        <TextBlock Text="🗺️ Upcoming Tours" 
+                                 FontSize="16" 
+                                 FontWeight="SemiBold" 
+                                 Foreground="#666"/>
+                        <TextBlock x:Name="UpcomingToursText" 
+                                 Text="0" 
+                                 FontSize="32" 
+                                 FontWeight="Bold" 
+                                 Foreground="#2196F3"/>
+                        <TextBlock Text="Scheduled tours" 
+                                 FontSize="12" 
+                                 Foreground="#999"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Pending Payments -->
+                <Border Grid.Column="2" Style="{StaticResource StatCard}">
+                    <StackPanel>
+                        <TextBlock Text="💳 Pending Payments" 
+                                 FontSize="16" 
+                                 FontWeight="SemiBold" 
+                                 Foreground="#666"/>
+                        <TextBlock x:Name="PendingPaymentsText" 
+                                 Text="0" 
+                                 FontSize="32" 
+                                 FontWeight="Bold" 
+                                 Foreground="#FF9800"/>
+                        <TextBlock Text="Awaiting payment" 
+                                 FontSize="12" 
+                                 Foreground="#999"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- My Reviews -->
+                <Border Grid.Column="3" Style="{StaticResource StatCard}">
+                    <StackPanel>
+                        <TextBlock Text="⭐ My Reviews" 
+                                 FontSize="16" 
+                                 FontWeight="SemiBold" 
+                                 Foreground="#666"/>
+                        <TextBlock x:Name="MyReviewsText" 
+                                 Text="0" 
+                                 FontSize="32" 
+                                 FontWeight="Bold" 
+                                 Foreground="#9C27B0"/>
+                        <TextBlock Text="Reviews submitted" 
+                                 FontSize="12" 
+                                 Foreground="#999"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+          
+
+            <!-- Recent Activities and Notifications -->
+            <Grid Grid.Row="3" Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Recent Bookings -->
+                <Border Grid.Column="0" Style="{StaticResource StatCard}" Margin="0,0,10,0">
+                    <StackPanel>
+                        <TextBlock Text="📋 Recent Bookings" 
+                                 FontSize="18" 
+                                 FontWeight="Bold" 
+                                 Margin="0,0,0,15"/>
+                        
+                        <ScrollViewer MaxHeight="200" VerticalScrollBarVisibility="Auto">
+                            <StackPanel x:Name="RecentBookingsPanel">
+                                <!-- Bookings will be added dynamically -->
+                            </StackPanel>
+                        </ScrollViewer>
+                    </StackPanel>
+                </Border>
+
+                <!-- Notifications -->
+                <Border Grid.Column="1" Style="{StaticResource StatCard}" Margin="10,0,0,0">
+                    <StackPanel>
+                        <TextBlock Text="🔔 Notifications" 
+                                 FontSize="18" 
+                                 FontWeight="Bold" 
+                                 Margin="0,0,0,15"/>
+                        
+                        <ScrollViewer MaxHeight="200" VerticalScrollBarVisibility="Auto">
+                            <StackPanel x:Name="NotificationsPanel">
+                                <!-- Notifications will be added dynamically -->
+                            </StackPanel>
+                        </ScrollViewer>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- Upcoming Tours -->
+            <Border Grid.Row="4" Style="{StaticResource StatCard}">
+                <StackPanel>
+                    <TextBlock Text="🗓️ My Upcoming Tours" 
+                             FontSize="18" 
+                             FontWeight="Bold" 
+                             Margin="0,0,0,15"/>
+                    
+                    <DataGrid x:Name="UpcomingToursDataGrid" 
+                            AutoGenerateColumns="False"
+                            CanUserAddRows="False"
+                            CanUserDeleteRows="False"
+                            CanUserReorderColumns="True"
+                            CanUserResizeColumns="True"
+                            GridLinesVisibility="Horizontal"
+                            HeadersVisibility="Column"
+                            MaxHeight="200">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Tour Name" 
+                                              Binding="{Binding Tour.TourName}" 
+                                              Width="200"/>
+                            <DataGridTextColumn Header="Departure Date" 
+                                              Binding="{Binding DepartureDate, StringFormat=dd/MM/yyyy}" 
+                                              Width="120"/>
+                            <DataGridTextColumn Header="Return Date" 
+                                              Binding="{Binding ReturnDate, StringFormat=dd/MM/yyyy}" 
+                                              Width="120"/>
+                            <DataGridTextColumn Header="Guide" 
+                                              Binding="{Binding Guide.FullName}" 
+                                              Width="150"/>
+                            <DataGridTextColumn Header="Status" 
+                                              Binding="{Binding Status}" 
+                                              Width="100"/>
+                            <DataGridTextColumn Header="Price" 
+                                              Binding="{Binding Tour.Price, StringFormat=C}" 
+                                              Width="100"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </ScrollViewer>
+</Page> 

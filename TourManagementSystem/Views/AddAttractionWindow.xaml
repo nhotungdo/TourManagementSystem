@@ -1,0 +1,202 @@
+<Window x:Class="TourManagementSystem.Views.AddAttractionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Add Attraction" 
+        Height="600" 
+        Width="500"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Background="White">
+    
+    <Window.Resources>
+        <!-- Form TextBox Style -->
+        <Style x:Key="FormTextBox" TargetType="TextBox">
+            <Setter Property="Margin" Value="0,5,0,15"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="BorderBrush" Value="#DDD"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="White"/>
+        </Style>
+
+        <!-- Form ComboBox Style -->
+        <Style x:Key="FormComboBox" TargetType="ComboBox">
+            <Setter Property="Margin" Value="0,5,0,15"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="BorderBrush" Value="#DDD"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="White"/>
+        </Style>
+
+        <!-- Action Button Style -->
+        <Style x:Key="ActionButton" TargetType="Button">
+            <Setter Property="Background" Value="#2196F3"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="20,10"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#1976D2"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Cancel Button Style -->
+        <Style x:Key="CancelButton" TargetType="Button">
+            <Setter Property="Background" Value="#F44336"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="20,10"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#D32F2F"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Info Text Style -->
+        <Style x:Key="InfoText" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Foreground" Value="#666"/>
+            <Setter Property="Margin" Value="0,-10,0,15"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,20">
+            <TextBlock Text="🏔️ Add Attraction" 
+                     FontSize="24" 
+                     FontWeight="Bold" 
+                     Margin="0,0,0,5"/>
+            <TextBlock Text="Add a new tourist attraction" 
+                     FontSize="14" 
+                     Foreground="#666"/>
+        </StackPanel>
+
+        <!-- Form -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <!-- Attraction Name -->
+                <TextBlock Text="Attraction Name *" 
+                         FontSize="14" 
+                         FontWeight="SemiBold"/>
+                <TextBox x:Name="AttractionNameTextBox" 
+                       Style="{StaticResource FormTextBox}"
+                       MaxLength="100"
+                       Text=""/>
+
+                <!-- Location -->
+                <TextBlock Text="Location *" 
+                         FontSize="14" 
+                         FontWeight="SemiBold"/>
+                <ComboBox x:Name="LocationComboBox" 
+                        Style="{StaticResource FormComboBox}"
+                        IsEditable="True">
+                    <ComboBoxItem Content="Hà Nội"/>
+                    <ComboBoxItem Content="Hồ Chí Minh"/>
+                    <ComboBoxItem Content="Đà Nẵng"/>
+                    <ComboBoxItem Content="Huế"/>
+                    <ComboBoxItem Content="Đà Lạt"/>
+                    <ComboBoxItem Content="Nha Trang"/>
+                    <ComboBoxItem Content="Phú Quốc"/>
+                    <ComboBoxItem Content="Sapa"/>
+                    <ComboBoxItem Content="Hạ Long"/>
+                    <ComboBoxItem Content="Mỹ Tho"/>
+                </ComboBox>
+
+                <!-- Description -->
+                <TextBlock Text="Description *" 
+                         FontSize="14" 
+                         FontWeight="SemiBold"/>
+                <TextBox x:Name="DescriptionTextBox" 
+                       Style="{StaticResource FormTextBox}"
+                       MaxLength="500"
+                       TextWrapping="Wrap"
+                       AcceptsReturn="True"
+                       Height="80"
+                       Text=""/>
+                <TextBlock Text="(Brief description of the attraction)" 
+                         Style="{StaticResource InfoText}"/>
+
+                <!-- Image URL -->
+                <TextBlock Text="Image URL" 
+                         FontSize="14" 
+                         FontWeight="SemiBold"/>
+                <TextBox x:Name="ImageUrlTextBox" 
+                       Style="{StaticResource FormTextBox}"
+                       MaxLength="500"
+                       Text=""/>
+                <TextBlock Text="(Optional: URL to an image of the attraction)" 
+                         Style="{StaticResource InfoText}"/>
+
+                <!-- Opening Hours -->
+                <TextBlock Text="Opening Hours" 
+                         FontSize="14" 
+                         FontWeight="SemiBold"/>
+                <TextBox x:Name="OpeningHoursTextBox" 
+                       Style="{StaticResource FormTextBox}"
+                       MaxLength="100"
+                       Text="8:00 AM - 6:00 PM"/>
+                <TextBlock Text="(e.g., 8:00 AM - 6:00 PM)" 
+                         Style="{StaticResource InfoText}"/>
+
+                <!-- Entry Fee -->
+                <TextBlock Text="Entry Fee (VND)" 
+                         FontSize="14" 
+                         FontWeight="SemiBold"/>
+                <TextBox x:Name="EntryFeeTextBox" 
+                       Style="{StaticResource FormTextBox}"
+                       Text="0"
+                       PreviewTextInput="NumberValidationTextBox"/>
+                <TextBlock Text="(Enter 0 if free entry)" 
+                         Style="{StaticResource InfoText}"/>
+
+                <!-- Category -->
+                <TextBlock Text="Category" 
+                         FontSize="14" 
+                         FontWeight="SemiBold"/>
+                <ComboBox x:Name="CategoryComboBox" 
+                        Style="{StaticResource FormComboBox}">
+                    <ComboBoxItem Content="Natural Scenery" IsSelected="True"/>
+                    <ComboBoxItem Content="Historical Site"/>
+                    <ComboBoxItem Content="Cultural Site"/>
+                    <ComboBoxItem Content="Entertainment"/>
+                    <ComboBoxItem Content="Religious Site"/>
+                    <ComboBoxItem Content="Museum"/>
+                    <ComboBoxItem Content="Park"/>
+                    <ComboBoxItem Content="Beach"/>
+                    <ComboBoxItem Content="Mountain"/>
+                    <ComboBoxItem Content="Other"/>
+                </ComboBox>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Buttons -->
+        <StackPanel Grid.Row="2" 
+                  Orientation="Horizontal" 
+                  HorizontalAlignment="Right" 
+                  Margin="0,20,0,0">
+            <Button Content="Cancel" 
+                  Style="{StaticResource CancelButton}"
+                  Click="CancelButton_Click"
+                  Margin="0,0,10,0"/>
+            <Button Content="Add Attraction" 
+                  Style="{StaticResource ActionButton}"
+                  Click="AddAttractionButton_Click"/>
+        </StackPanel>
+    </Grid>
+</Window> 

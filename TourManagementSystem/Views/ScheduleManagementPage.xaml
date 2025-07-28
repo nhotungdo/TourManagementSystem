@@ -1,0 +1,219 @@
+<Page x:Class="TourManagementSystem.Views.ScheduleManagementPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Schedule Management" 
+      Background="White">
+    
+    <Page.Resources>
+        <Style x:Key="ActionButton" TargetType="Button">
+            <Setter Property="Background" Value="#2196F3"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="15,8"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="5"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#1976D2"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="DeleteButton" TargetType="Button" BasedOn="{StaticResource ActionButton}">
+            <Setter Property="Background" Value="#F44336"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#D32F2F"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="EditButton" TargetType="Button" BasedOn="{StaticResource ActionButton}">
+            <Setter Property="Background" Value="#FF9800"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#F57C00"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Page.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,20">
+            <TextBlock Text="📅 Schedule Management" 
+                     FontSize="24" 
+                     FontWeight="Bold" 
+                     Margin="0,0,0,10"/>
+            <TextBlock Text="Create and manage tour schedules" 
+                     FontSize="14" 
+                     Foreground="#666"/>
+        </StackPanel>
+
+        <!-- Controls -->
+        <Grid Grid.Row="1" Margin="0,0,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Search Box -->
+            <TextBox x:Name="SearchTextBox" 
+                   Grid.Column="0"
+                   Margin="0,0,10,0"
+                   Padding="10,8"
+                   FontSize="14"
+                   BorderThickness="1"
+                   BorderBrush="#DDD"
+                   TextChanged="SearchTextBox_TextChanged"
+                   VerticalContentAlignment="Center">
+                <TextBox.Style>
+                    <Style TargetType="TextBox">
+                        <Style.Triggers>
+                            <Trigger Property="Text" Value="">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <VisualBrush AlignmentX="Left" AlignmentY="Center" Stretch="None">
+                                            <VisualBrush.Visual>
+                                                <TextBlock Text="🔍 Search schedules..." 
+                                                         Foreground="Gray" 
+                                                         FontSize="14"/>
+                                            </VisualBrush.Visual>
+                                        </VisualBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
+
+            <!-- Status Filter -->
+            <ComboBox x:Name="StatusFilterComboBox" 
+                    Grid.Column="1"
+                    Margin="0,0,10,0"
+                    Padding="10,8"
+                    FontSize="14"
+                    Width="150"
+                    SelectionChanged="StatusFilterComboBox_SelectionChanged">
+                <ComboBoxItem Content="All Status" IsSelected="True"/>
+                <ComboBoxItem Content="Scheduled"/>
+                <ComboBoxItem Content="In Progress"/>
+                <ComboBoxItem Content="Completed"/>
+                <ComboBoxItem Content="Cancelled"/>
+            </ComboBox>
+
+            <!-- Add Schedule Button -->
+            <Button Content="➕ Create Schedule" 
+                  Grid.Column="2"
+                  Style="{StaticResource ActionButton}"
+                  Click="AddScheduleButton_Click"/>
+        </Grid>
+
+        <!-- DataGrid -->
+        <DataGrid x:Name="SchedulesDataGrid" 
+                Grid.Row="2"
+                AutoGenerateColumns="False"
+                CanUserAddRows="False"
+                CanUserDeleteRows="False"
+                CanUserReorderColumns="True"
+                CanUserResizeColumns="True"
+                CanUserResizeRows="False"
+                GridLinesVisibility="Horizontal"
+                HeadersVisibility="Column"
+                SelectionMode="Single"
+                SelectionChanged="SchedulesDataGrid_SelectionChanged">
+            
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" 
+                                  Binding="{Binding ScheduleId}" 
+                                  Width="60" 
+                                  IsReadOnly="True"/>
+                
+                <DataGridTextColumn Header="Tour" 
+                                  Binding="{Binding Tour.TourName}" 
+                                  Width="150"/>
+                
+                <DataGridTextColumn Header="Departure Date" 
+                                  Binding="{Binding DepartureDate, StringFormat=dd/MM/yyyy}" 
+                                  Width="120"/>
+                
+                <DataGridTextColumn Header="Return Date" 
+                                  Binding="{Binding ReturnDate, StringFormat=dd/MM/yyyy}" 
+                                  Width="120"/>
+                
+                <DataGridTextColumn Header="Max Capacity" 
+                                  Binding="{Binding MaxCapacity}" 
+                                  Width="100"/>
+                
+                <DataGridTextColumn Header="Current Bookings" 
+                                  Binding="{Binding CurrentBookings}" 
+                                  Width="120"/>
+                
+                <DataGridTextColumn Header="Guide" 
+                                  Binding="{Binding Guide.FullName}" 
+                                  Width="120"/>
+                
+                <DataGridTextColumn Header="Status" 
+                                  Binding="{Binding Status}" 
+                                  Width="100">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Text" Value="{Binding Status}"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Status}" Value="Scheduled">
+                                    <Setter Property="Foreground" Value="Blue"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="In Progress">
+                                    <Setter Property="Foreground" Value="Green"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="Completed">
+                                    <Setter Property="Foreground" Value="Gray"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="Cancelled">
+                                    <Setter Property="Foreground" Value="Red"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                
+                <DataGridTemplateColumn Header="Actions" Width="150">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Content="✏️" 
+                                      Style="{StaticResource EditButton}"
+                                      Click="EditSchedule_Click"
+                                      Tag="{Binding ScheduleId}"/>
+                                <Button Content="🗑️" 
+                                      Style="{StaticResource DeleteButton}"
+                                      Click="DeleteSchedule_Click"
+                                      Tag="{Binding ScheduleId}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Page> 
