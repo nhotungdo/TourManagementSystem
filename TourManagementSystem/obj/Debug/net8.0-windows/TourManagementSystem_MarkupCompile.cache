@@ -1,20 +1,20 @@
 ﻿TourManagementSystem
-
+1.0.0.0
 
 winexe
 C#
 .cs
-F:\PRN212-REVIEW\TourManagementSystem\TourManagementSystem\obj\Debug\net8.0-windows\
+f:\PRN212-REVIEW\TourManagementSystem\TourManagementSystem\obj\Debug\net8.0-windows\
 TourManagementSystem
 none
 false
-TRACE;DEBUG;NET;NET8_0;NETCOREAPP
-F:\PRN212-REVIEW\TourManagementSystem\TourManagementSystem\App.xaml
+TRACE;DEBUG;NET;NET8_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
+f:\PRN212-REVIEW\TourManagementSystem\TourManagementSystem\App.xaml
 521161778359
 
-84-920380658
+86-337095407
 2281313218741
 Views\AccountManagementPage.xaml;Views\ActivityLogPage.xaml;Views\AddAttractionWindow.xaml;Views\AddBookingWindow.xaml;Views\AddItineraryWindow.xaml;Views\AddPromotionWindow.xaml;Views\AddReviewWindow.xaml;Views\AddScheduleWindow.xaml;Views\AddTourWindow.xaml;Views\AddUserWindow.xaml;Views\AdminDashboardPage.xaml;Views\AdminMainWindow.xaml;Views\AttractionManagementPage.xaml;Views\BookingHistoryPage.xaml;Views\BookingManagementPage.xaml;Views\BookTourPage.xaml;Views\BrowseToursPage.xaml;Views\CustomerDashboardPage.xaml;Views\CustomerMainWindow.xaml;Views\EditAttractionWindow.xaml;Views\EditBookingWindow.xaml;Views\EditInvoiceWindow.xaml;Views\EditItineraryWindow.xaml;Views\EditPaymentWindow.xaml;Views\EditPromotionWindow.xaml;Views\EditReviewWindow.xaml;Views\EditScheduleWindow.xaml;Views\EditSystemConfigWindow.xaml;Views\EditTourWindow.xaml;Views\EditUserWindow.xaml;Views\ForgotPasswordWindow.xaml;Views\GenerateInvoiceWindow.xaml;Views\InvoiceManagementPage.xaml;Views\ItineraryManagementPage.xaml;Views\LoginWindow.xaml;Views\MyBookingsPage.xaml;Views\MyReviewsPage.xaml;Views\NotificationsPage.xaml;Views\PaymentManagementPage.xaml;Views\PersonalStatisticsPage.xaml;Views\PlaceholderPage.xaml;Views\ProcessPaymentWindow.xaml;Views\PromotionManagementPage.xaml;Views\PromotionsPage.xaml;Views\ReportsPage.xaml;Views\ReviewManagementPage.xaml;Views\ScheduleManagementPage.xaml;Views\StaffDashboardPage.xaml;Views\StaffMainWindow.xaml;Views\SystemConfigPage.xaml;Views\TourManagementPage.xaml;Views\UserManagementPage.xaml;
 
-False
+True
 

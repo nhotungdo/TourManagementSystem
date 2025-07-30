@@ -40,28 +40,6 @@ Hệ thống quản lý tour du lịch với các chức năng quản lý ngư�
 - SQL Server hoặc SQL Server Express
 - Visual Studio 2022 hoặc VS Code
 
-### Cài đặt
-1. Clone repository:
-```bash
-git clone <repository-url>
-cd TourManagementSystem
-```
-
-2. Cài đặt dependencies:
-```bash
-dotnet restore
-```
-
-3. Cấu hình database:
-   - Chạy script `db/Demo6-TourManagement.sql` để tạo database
-   - Cập nhật connection string trong `appsettings.json`
-
-4. Build và chạy ứng dụng:
-```bash
-dotnet build
-dotnet run --project TourManagementSystem
-```
-
 ## 👤 Tài khoản mẫu
 
 ### Admin
@@ -130,8 +108,3 @@ Nếu gặp lỗi khi chạy ứng dụng:
 3. Kiểm tra .NET 8.0 SDK đã được cài đặt
 4. Chạy `dotnet clean` và `dotnet build` lại
 
-## 📞 Hỗ trợ
-
-Nếu có vấn đề hoặc câu hỏi, vui lòng liên hệ:
-- Email: support@tourmanagement.com
-- Phone: 0901234567 
