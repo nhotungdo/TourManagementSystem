@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "NLGsOztPr+0=",
+  "dgSpecHash": "bXMn9+oh4Y0=",
   "success": true,
-  "projectFilePath": "F:\\PRN212-REVIEW\\TourManagementSystem\\TourManagementSystem\\TourManagementSystem.csproj",
+  "projectFilePath": "F:\\PRN212-REVIEW\\TourManagement\\TourManagementSystem\\TourManagementSystem\\TourManagementSystem.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\MY PC\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\MY PC\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",

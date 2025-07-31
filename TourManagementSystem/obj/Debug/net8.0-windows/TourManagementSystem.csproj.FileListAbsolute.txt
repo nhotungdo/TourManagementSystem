@@ -249,3 +249,4 @@ F:\PRN212-REVIEW\TourManagementSystem\TourManagementSystem\obj\Debug\net8.0-wind
 F:\PRN212-REVIEW\TourManagementSystem\TourManagementSystem\obj\Debug\net8.0-windows\Views\EditBookingWindow.g.cs
 F:\PRN212-REVIEW\TourManagementSystem\TourManagementSystem\obj\Debug\net8.0-windows\Views\EditPaymentWindow.baml
 F:\PRN212-REVIEW\TourManagementSystem\TourManagementSystem\obj\Debug\net8.0-windows\Views\EditPaymentWindow.g.cs
+F:\PRN212-REVIEW\TourManagementSystem\TourManagementSystem\obj\Debug\net8.0-windows\TourManagementSystem.sourcelink.json

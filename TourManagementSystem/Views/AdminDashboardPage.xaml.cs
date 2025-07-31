@@ -199,8 +199,17 @@ namespace TourManagementSystem.Views
 
         private void ViewReportsButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("View Reports functionality will be implemented here.", "Info",
-                MessageBoxButton.OK, MessageBoxImage.Information);
+            try
+            {
+                // Navigate to the Reports page
+                var reportsPage = new ReportsPage();
+                NavigationService?.Navigate(reportsPage);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error navigating to reports: {ex.Message}", "Error",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 

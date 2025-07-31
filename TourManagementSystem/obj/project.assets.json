@@ -4696,11 +4696,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\PRN212-REVIEW\\TourManagementSystem\\TourManagementSystem\\TourManagementSystem.csproj",
+      "projectUniqueName": "F:\\PRN212-REVIEW\\TourManagement\\TourManagementSystem\\TourManagementSystem\\TourManagementSystem.csproj",
       "projectName": "TourManagementSystem",
-      "projectPath": "F:\\PRN212-REVIEW\\TourManagementSystem\\TourManagementSystem\\TourManagementSystem.csproj",
+      "projectPath": "F:\\PRN212-REVIEW\\TourManagement\\TourManagementSystem\\TourManagementSystem\\TourManagementSystem.csproj",
       "packagesPath": "C:\\Users\\MY PC\\.nuget\\packages\\",
-      "outputPath": "F:\\PRN212-REVIEW\\TourManagementSystem\\TourManagementSystem\\obj\\",
+      "outputPath": "F:\\PRN212-REVIEW\\TourManagement\\TourManagementSystem\\TourManagementSystem\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

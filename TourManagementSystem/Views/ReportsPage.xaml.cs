@@ -392,15 +392,14 @@ namespace TourManagementSystem.Views
                 if (_totalToursText != null)
                     _totalToursText.Text = totalTours.ToString();
 
-                // Total Bookings
-                var totalBookings = _context.Bookings.Count(b => b.Status == "confirmed");
+                // Total Bookings (all statuses)
+                var totalBookings = _context.Bookings.Count();
                 if (_totalBookingsText != null)
                     _totalBookingsText.Text = totalBookings.ToString();
 
-                // Total Revenue (this month)
-                var startOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                // Total Revenue (all time)
                 var totalRevenue = _context.Bookings
-                    .Where(b => b.Status == "confirmed" && b.BookingDate >= startOfMonth)
+                    .Where(b => b.Status == "confirmed" || b.Status == "completed")
                     .Sum(b => b.TotalPrice);
                 if (_totalRevenueText != null)
                     _totalRevenueText.Text = totalRevenue.ToString("C");
@@ -478,12 +477,33 @@ namespace TourManagementSystem.Views
         {
             try
             {
-                var report = GenerateComprehensiveReport();
+                // Show report type selection dialog
+                var reportType = MessageBox.Show(
+                    "Select report type:\n\n" +
+                    "Yes = Comprehensive Report (Detailed analysis)\n" +
+                    "No = Financial Summary (Revenue and booking focus)",
+                    "Report Type Selection",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question);
+
+                string report;
+                string fileName;
+
+                if (reportType == MessageBoxResult.Yes)
+                {
+                    report = GenerateComprehensiveReport();
+                    fileName = $"Tour_Comprehensive_Report_{DateTime.Now:yyyyMMdd_HHmmss}.txt";
+                }
+                else
+                {
+                    report = GenerateFinancialSummary();
+                    fileName = $"Tour_Financial_Summary_{DateTime.Now:yyyyMMdd_HHmmss}.txt";
+                }
 
                 var saveFileDialog = new SaveFileDialog
                 {
                     Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*",
-                    FileName = $"Tour_Report_{DateTime.Now:yyyyMMdd_HHmmss}.txt"
+                    FileName = fileName
                 };
 
                 if (saveFileDialog.ShowDialog() == true)
@@ -545,46 +565,105 @@ namespace TourManagementSystem.Views
             var report = new System.Text.StringBuilder();
 
             report.AppendLine("TOUR MANAGEMENT SYSTEM - COMPREHENSIVE REPORT");
-            report.AppendLine("=".PadRight(50, '='));
+            report.AppendLine("=".PadRight(60, '='));
             report.AppendLine($"Generated on: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
             report.AppendLine();
 
             // Statistics Summary
             report.AppendLine("STATISTICS SUMMARY");
-            report.AppendLine("-".PadRight(30, '-'));
+            report.AppendLine("-".PadRight(40, '-'));
             report.AppendLine($"Total Tours: {_context.Tours.Count(t => t.IsActive == true)}");
-            report.AppendLine($"Total Bookings: {_context.Bookings.Count(b => b.Status == "confirmed")}");
-            report.AppendLine($"Total Revenue: {_context.Bookings.Where(b => b.Status == "confirmed").Sum(b => b.TotalPrice):C}");
+            report.AppendLine($"Total Bookings: {_context.Bookings.Count()}");
+            report.AppendLine($"Confirmed Bookings: {_context.Bookings.Count(b => b.Status == "confirmed")}");
+            report.AppendLine($"Pending Bookings: {_context.Bookings.Count(b => b.Status == "pending")}");
+            report.AppendLine($"Total Revenue: {_context.Bookings.Where(b => b.Status == "confirmed" || b.Status == "completed").Sum(b => b.TotalPrice):C}");
             report.AppendLine($"Active Users: {_context.Users.Count(u => u.IsActive == true)}");
+            report.AppendLine($"Total Users: {_context.Users.Count()}");
+            report.AppendLine();
+
+            // Booking Status Breakdown
+            report.AppendLine("BOOKING STATUS BREAKDOWN");
+            report.AppendLine("-".PadRight(40, '-'));
+            var bookingStatuses = _context.Bookings
+                .GroupBy(b => b.Status)
+                .Select(g => new { Status = g.Key, Count = g.Count() })
+                .OrderByDescending(x => x.Count);
+
+            foreach (var status in bookingStatuses)
+            {
+                report.AppendLine($"{status.Status}: {status.Count} bookings");
+            }
             report.AppendLine();
 
             // Top Tours
             report.AppendLine("TOP TOURS BY BOOKINGS");
-            report.AppendLine("-".PadRight(30, '-'));
+            report.AppendLine("-".PadRight(40, '-'));
             var topTours = _context.Tours
                 .Where(t => t.IsActive == true)
                 .Select(t => new
                 {
                     t.TourName,
+                    t.Destination,
                     BookingCount = t.TourSchedules.SelectMany(ts => ts.Bookings).Count(b => b.Status == "confirmed"),
-                    Revenue = t.TourSchedules.SelectMany(ts => ts.Bookings).Where(b => b.Status == "confirmed").Sum(b => b.TotalPrice)
+                    Revenue = t.TourSchedules.SelectMany(ts => ts.Bookings).Where(b => b.Status == "confirmed" || b.Status == "completed").Sum(b => b.TotalPrice),
+                    AverageRating = t.TourSchedules
+                        .SelectMany(ts => ts.Bookings)
+                        .SelectMany(b => b.Reviews)
+                        .Any() ? t.TourSchedules
+                            .SelectMany(ts => ts.Bookings)
+                            .SelectMany(b => b.Reviews)
+                            .Average(r => r.Rating) : 0.0
                 })
                 .OrderByDescending(t => t.BookingCount)
-                .Take(5);
+                .Take(10);
 
             foreach (var tour in topTours)
             {
-                report.AppendLine($"{tour.TourName}: {tour.BookingCount} bookings, {tour.Revenue:C}");
+                report.AppendLine($"{tour.TourName} ({tour.Destination}): {tour.BookingCount} bookings, {tour.Revenue:C}, Rating: {tour.AverageRating:F1}/5");
+            }
+            report.AppendLine();
+
+            // Revenue by Month (Last 6 months)
+            report.AppendLine("REVENUE BY MONTH (LAST 6 MONTHS)");
+            report.AppendLine("-".PadRight(40, '-'));
+            var sixMonthsAgo = DateTime.Now.AddMonths(-6);
+            var monthlyRevenue = _context.Bookings
+                .Where(b => (b.Status == "confirmed" || b.Status == "completed") && b.BookingDate >= sixMonthsAgo)
+                .GroupBy(b => new { b.BookingDate.Value.Year, b.BookingDate.Value.Month })
+                .Select(g => new { 
+                    Month = $"{g.Key.Year}-{g.Key.Month:D2}", 
+                    Revenue = g.Sum(b => b.TotalPrice),
+                    Bookings = g.Count()
+                })
+                .OrderBy(x => x.Month);
+
+            foreach (var month in monthlyRevenue)
+            {
+                report.AppendLine($"{month.Month}: {month.Revenue:C} ({month.Bookings} bookings)");
+            }
+            report.AppendLine();
+
+            // User Statistics
+            report.AppendLine("USER STATISTICS");
+            report.AppendLine("-".PadRight(40, '-'));
+            var userStats = _context.Users
+                .GroupBy(u => u.Role)
+                .Select(g => new { Role = g.Key, Count = g.Count(), Active = g.Count(u => u.IsActive == true) })
+                .OrderByDescending(x => x.Count);
+
+            foreach (var role in userStats)
+            {
+                report.AppendLine($"{role.Role}: {role.Count} total, {role.Active} active");
             }
             report.AppendLine();
 
             // Recent Activity
-            report.AppendLine("RECENT ACTIVITY");
-            report.AppendLine("-".PadRight(30, '-'));
+            report.AppendLine("RECENT ACTIVITY (LAST 20 ACTIONS)");
+            report.AppendLine("-".PadRight(40, '-'));
             var recentActivity = _context.ActivityLogs
                 .Include(al => al.User)
                 .OrderByDescending(al => al.CreatedAt)
-                .Take(10);
+                .Take(20);
 
             foreach (var activity in recentActivity)
             {
@@ -595,21 +674,93 @@ namespace TourManagementSystem.Views
             return report.ToString();
         }
 
+        private string GenerateFinancialSummary()
+        {
+            var report = new System.Text.StringBuilder();
+
+            report.AppendLine("TOUR MANAGEMENT SYSTEM - FINANCIAL SUMMARY");
+            report.AppendLine("=".PadRight(50, '='));
+            report.AppendLine($"Generated on: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+            report.AppendLine();
+
+            // Financial Overview
+            report.AppendLine("FINANCIAL OVERVIEW");
+            report.AppendLine("-".PadRight(30, '-'));
+            var totalRevenue = _context.Bookings.Where(b => b.Status == "confirmed" || b.Status == "completed").Sum(b => b.TotalPrice);
+            var pendingRevenue = _context.Bookings.Where(b => b.Status == "pending").Sum(b => b.TotalPrice);
+            var totalBookings = _context.Bookings.Count();
+            var confirmedBookings = _context.Bookings.Count(b => b.Status == "confirmed" || b.Status == "completed");
+            var pendingBookings = _context.Bookings.Count(b => b.Status == "pending");
+
+            report.AppendLine($"Total Revenue (Confirmed): {totalRevenue:C}");
+            report.AppendLine($"Pending Revenue: {pendingRevenue:C}");
+            report.AppendLine($"Total Bookings: {totalBookings}");
+            report.AppendLine($"Confirmed Bookings: {confirmedBookings}");
+            report.AppendLine($"Pending Bookings: {pendingBookings}");
+            report.AppendLine($"Average Booking Value: {(confirmedBookings > 0 ? totalRevenue / confirmedBookings : 0):C}");
+            report.AppendLine();
+
+            // Top Revenue Generating Tours
+            report.AppendLine("TOP REVENUE GENERATING TOURS");
+            report.AppendLine("-".PadRight(30, '-'));
+            var topRevenueTours = _context.Tours
+                .Where(t => t.IsActive == true)
+                .Select(t => new
+                {
+                    t.TourName,
+                    Revenue = t.TourSchedules.SelectMany(ts => ts.Bookings).Where(b => b.Status == "confirmed" || b.Status == "completed").Sum(b => b.TotalPrice),
+                    Bookings = t.TourSchedules.SelectMany(ts => ts.Bookings).Count(b => b.Status == "confirmed" || b.Status == "completed")
+                })
+                .OrderByDescending(t => t.Revenue)
+                .Take(10);
+
+            foreach (var tour in topRevenueTours)
+            {
+                report.AppendLine($"{tour.TourName}: {tour.Revenue:C} ({tour.Bookings} bookings)");
+            }
+            report.AppendLine();
+
+            // Monthly Revenue Trend (Last 12 months)
+            report.AppendLine("MONTHLY REVENUE TREND (LAST 12 MONTHS)");
+            report.AppendLine("-".PadRight(30, '-'));
+            var twelveMonthsAgo = DateTime.Now.AddMonths(-12);
+            var monthlyRevenue = _context.Bookings
+                .Where(b => (b.Status == "confirmed" || b.Status == "completed") && b.BookingDate >= twelveMonthsAgo)
+                .GroupBy(b => new { b.BookingDate.Value.Year, b.BookingDate.Value.Month })
+                .Select(g => new { 
+                    Month = $"{g.Key.Year}-{g.Key.Month:D2}", 
+                    Revenue = g.Sum(b => b.TotalPrice),
+                    Bookings = g.Count()
+                })
+                .OrderBy(x => x.Month);
+
+            foreach (var month in monthlyRevenue)
+            {
+                report.AppendLine($"{month.Month}: {month.Revenue:C} ({month.Bookings} bookings)");
+            }
+
+            return report.ToString();
+        }
+
         private string GenerateCSVData()
         {
             var csv = new System.Text.StringBuilder();
 
-            // Headers
-            csv.AppendLine("Tour Name,Bookings,Revenue,Average Rating");
+            // Tour Performance Data
+            csv.AppendLine("=== TOUR PERFORMANCE DATA ===");
+            csv.AppendLine("Tour Name,Destination,Duration (Days),Base Price,Total Bookings,Confirmed Bookings,Revenue,Average Rating");
 
-            // Data
             var tourData = _context.Tours
                 .Where(t => t.IsActive == true)
                 .Select(t => new
                 {
                     TourName = t.TourName,
-                    BookingCount = t.TourSchedules.SelectMany(ts => ts.Bookings).Count(b => b.Status == "confirmed"),
-                    Revenue = t.TourSchedules.SelectMany(ts => ts.Bookings).Where(b => b.Status == "confirmed").Sum(b => b.TotalPrice),
+                    Destination = t.Destination,
+                    DurationDays = t.DurationDays,
+                    BasePrice = t.BasePrice,
+                    TotalBookings = t.TourSchedules.SelectMany(ts => ts.Bookings).Count(),
+                    ConfirmedBookings = t.TourSchedules.SelectMany(ts => ts.Bookings).Count(b => b.Status == "confirmed"),
+                    Revenue = t.TourSchedules.SelectMany(ts => ts.Bookings).Where(b => b.Status == "confirmed" || b.Status == "completed").Sum(b => b.TotalPrice),
                     AverageRating = t.TourSchedules
                         .SelectMany(ts => ts.Bookings)
                         .SelectMany(b => b.Reviews)
@@ -618,11 +769,39 @@ namespace TourManagementSystem.Views
                             .SelectMany(b => b.Reviews)
                             .Average(r => r.Rating) : 0.0
                 })
-                .OrderByDescending(t => t.BookingCount);
+                .OrderByDescending(t => t.ConfirmedBookings);
 
             foreach (var tour in tourData)
             {
-                csv.AppendLine($"{tour.TourName},{tour.BookingCount},{tour.Revenue:F2},{tour.AverageRating:F1}");
+                csv.AppendLine($"{tour.TourName},{tour.Destination},{tour.DurationDays},{tour.BasePrice:F2},{tour.TotalBookings},{tour.ConfirmedBookings},{tour.Revenue:F2},{tour.AverageRating:F1}");
+            }
+
+            csv.AppendLine();
+            csv.AppendLine("=== BOOKING STATUS BREAKDOWN ===");
+            csv.AppendLine("Status,Count");
+
+            var bookingStatuses = _context.Bookings
+                .GroupBy(b => b.Status)
+                .Select(g => new { Status = g.Key, Count = g.Count() })
+                .OrderByDescending(x => x.Count);
+
+            foreach (var status in bookingStatuses)
+            {
+                csv.AppendLine($"{status.Status},{status.Count}");
+            }
+
+            csv.AppendLine();
+            csv.AppendLine("=== USER STATISTICS ===");
+            csv.AppendLine("Role,Total Count,Active Count");
+
+            var userStats = _context.Users
+                .GroupBy(u => u.Role)
+                .Select(g => new { Role = g.Key, Count = g.Count(), Active = g.Count(u => u.IsActive == true) })
+                .OrderByDescending(x => x.Count);
+
+            foreach (var role in userStats)
+            {
+                csv.AppendLine($"{role.Role},{role.Count},{role.Active}");
             }
 
             return csv.ToString();
