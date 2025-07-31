@@ -100,7 +100,7 @@ namespace TourManagementSystem.Views {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TourManagementSystem;V1.0.0.0;component/views/addschedulewindow.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TourManagementSystem;component/views/addschedulewindow.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\Views\AddScheduleWindow.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);
